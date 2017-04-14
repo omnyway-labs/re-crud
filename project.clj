@@ -10,46 +10,19 @@
                  [cljsjs/reactable "0.14.1-0"]]
 
   :plugins [[lein-cljsbuild "1.1.4"]]
-
+  :hooks [leiningen.cljsbuild]
   :min-lein-version "2.5.3"
 
-  :source-paths ["src/clj"]
+  :source-paths ["src/cljs"]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
-  :figwheel {:css-dirs ["resources/public/css"]}
-
-  :profiles
-  {:dev
-   {:dependencies [[binaryage/devtools "0.8.2"]
-                   [figwheel-sidecar "0.5.9"]
-                   [com.cemerick/piggieback "0.2.1"]
-                   [re-frisk "0.4.4"]]
-
-    :plugins      [[lein-figwheel "0.5.9"]]
-    }}
-
   :cljsbuild
   {:builds
-   [{:id           "dev"
+   [{:id           "min"
      :source-paths ["src/cljs"]
-     :figwheel     {:on-jsload "re-crud.core/mount-root"}
-     :compiler     {:main                 re-crud.core
-                    :output-to            "resources/public/js/compiled/app.js"
-                    :output-dir           "resources/public/js/compiled/out"
-                    :asset-path           "js/compiled/out"
-                    :source-map-timestamp true
-                    :preloads             [devtools.preload]
-                    :external-config      {:devtools/config {:features-to-install :all}}
-                    }}
-
-    {:id           "min"
-     :source-paths ["src/cljs"]
-     :compiler     {:main            re-crud.core
-                    :output-to       "resources/public/js/compiled/app.js"
-                    :optimizations   :advanced
-                    :closure-defines {goog.DEBUG false}
-                    :pretty-print    false}}
-
-
-    ]})
+     :compiler     {:output-dir      ".cljsbuild/re-crud"
+                    :output-to       "public/re-crud.js"
+                    :optimizations   :whitespace
+                    :pretty-print    true
+                    :closure-defines {goog.DEBUG false}}}]})
