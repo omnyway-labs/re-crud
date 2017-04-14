@@ -1,4 +1,4 @@
-(defproject re-crud "0.1.0-SNAPSHOT"
+(defproject re-crud "0.1.0"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.229"]
                  [reagent "0.6.0"]
