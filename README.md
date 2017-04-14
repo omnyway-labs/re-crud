@@ -26,8 +26,8 @@ A simple component to retrieve and display a resource would look like this.
 ```
 
 - `:id` identifies the component to the library
-- `[:fetch]` describes how to fetch the resource to show
-- `[:view]` configures UI details
+- `:fetch` describes how to fetch the resource to show
+- `:view` configures UI details
 
 Here's a slightly more involved example:
 
@@ -42,7 +42,7 @@ Here's a slightly more involved example:
                                   #(dispatch [:goto-route :show-user {:user-id (:id %)}]))}
                 :view    {:skin :mui
                           :resource-name "User"}
-                :config  config/pantheon}))
+                :config  {:service-name "my-service"}}))
 ```
 
 - `:form` will render user input fields based on the `operation-id`'s request-schema
