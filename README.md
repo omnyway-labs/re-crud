@@ -5,6 +5,9 @@ A re-frame library for developing CRUD applications.
 If your service exposes a swagger API, even better! This can consume
 swagger.json and perform HTTP calls to show, list, create and update resources.
 
+![example-interface-screencast](https://media.giphy.com/media/zzYgeqXRUO9fG/giphy.gif "re-crud example interface")
+
+
 ## Installation
 re-crud is (will be) on clojars: `[re-crud "0.1.0"]`
 
