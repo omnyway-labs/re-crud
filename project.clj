@@ -4,9 +4,7 @@
                  [reagent "0.6.0"]
                  [re-frame "0.9.2"]
                  [cljs-ajax "0.5.8"]
-                 [bidi "2.0.13"]
                  [camel-snake-kebab "0.4.0"]
-                 [kibu/pushy "0.3.6"]
                  [cljsjs/reactable "0.14.1-0"]]
 
   :plugins [[lein-cljsbuild "1.1.4"]]
