@@ -6,19 +6,19 @@
 
 (defn show [id form view events config]
   (fn []
-    [:div.crud-show
-     [:div.sub-panel-heading
+    [:div.crud-show.content-sub-panel.mui-panel
+     [:div.crud-mui-sub-panel-heading
       [:h2.title (:title view)]
       [:h2 [:i.material-icons.crud-refresh {:on-click #(dispatch [(:refresh events)])} "refresh"]]]
      [crud-comp/show id view]]))
 
 (defn actions [{:keys [ resource-name actions]}]
   (fn [resource]
-    [:ul.actions-list
+    [:ul.crud-mui-actions-list
      (doall (for [[action-name {:keys [dispatch-fn enabled?]
                                 :or {enabled? (constantly true)} :as action}] actions]
               ^{:key (str resource-name action-name)}
-              [:li.action-item [:button {:on-click (dispatch-fn resource)
+              [:li.crud-mui-action-item [:button {:on-click (dispatch-fn resource)
                                          :class "mui-btn mui-btn--primary mui-btn--small"
                                          :disabled (not (enabled? resource))} action-name]]))]))
 
@@ -26,7 +26,7 @@
   (fn []
     (let [classes {:table "mui-table" :button "mui-btn mui-btn--primary"}]
       [:div.content-sub-panel.mui-panel
-       [:div.sub-panel-heading
+       [:div.crud-mui-sub-panel-heading
         [:h2.title (:title view)]
         [:h2 [:i.material-icons.crud-refresh {:on-click #(dispatch [(:refresh events)])} "refresh"]]]
        [crud-comp/list
