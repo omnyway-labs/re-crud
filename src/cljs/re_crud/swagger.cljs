@@ -37,8 +37,13 @@
              :array [expanded-schema])))))
    schema))
 
+(defn body-params [parameters]
+  (-> (filter #(= "body" (:in %)) parameters)
+      first
+      (get :schema)))
+
 (defn post-request-schema [parameters definitions]
-  (let [schema (get (first parameters) :schema)]
+  (let [schema (body-params parameters)]
     (-> (expand-schema schema definitions)
         cw/keywordize-keys
         minimize-schema)))
@@ -53,6 +58,7 @@
     :get (url-request-schema parameters definitions)
     :post (post-request-schema parameters definitions)
     :put (post-request-schema parameters definitions)
+    :patch (post-request-schema parameters definitions)
     :delete (url-request-schema parameters definitions)))
 
 (defn api-spec [path method spec definitions]
