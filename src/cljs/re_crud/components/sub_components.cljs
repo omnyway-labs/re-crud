@@ -38,6 +38,11 @@
        [:button.crud-button {:on-click #(dispatch [on-submit])
                              :class (:button classes)} "Submit"]])))
 
+(defn row [items last-item]
+  (doall
+   (filter some?
+           (conj (vec items) last-item))))
+
 (defn table [view resources-info]
   (fn [{:keys [classes filter-params fields actions] :as view} resources-info]
     (let [make-prop-renderer (fn [p]
@@ -53,22 +58,22 @@
                   :page-button-limit 10
                   :no-data-text "No matching records found."}
         [nc/thead {:class "crud-thead"}
-         (doall
-          (for [p ps]
-            ^{:key (util/rand-key)}
-            [nc/th {:class "crud-th" :column (name (first p))}
-             (s/capitalize (name (first p)))]))
-         (when actions
-           [nc/th {:class "crud-th" :column "actions"} "Actions"])]
+         (row (for [p ps]
+                ^{:key (util/rand-key)}
+                [nc/th {:class "crud-th" :column (name (first p))}
+                 (s/capitalize (name (first p)))])
+              (when actions
+                ^{:key (util/rand-key)}
+                [nc/th {:class "crud-th" :column "actions"} "Actions"]))]
         (doall
          (for [resource resources-info]
            ^{:key (util/rand-key)}
            [nc/tr {:class "crud-trow"}
-            (doall
-             (for [p ps]
-               ^{:key (util/rand-key)}
-               [nc/td {:class "crud-td" :column (name (first p))}
-                ((second p) (get resource (first p)))]))
-            (when actions
-              [nc/td {:class "crud-td" :column "actions"}
-               [actions resource]])]))]])))
+            (row (for [p ps]
+                   ^{:key (util/rand-key)}
+                   [nc/td {:class "crud-td" :column (name (first p))}
+                    ((second p) (get resource (first p)))])
+                 (when actions
+                   ^{:key (util/rand-key)}
+                   [nc/td {:class "crud-td" :column "actions"}
+                    [actions resource]]))]))]])))
