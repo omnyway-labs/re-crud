@@ -12,6 +12,11 @@
 (def perform-event-name (partial event-name "perform"))
 (def refresh-event-name (partial event-name "refresh"))
 
+(defn ignore-lists [x]
+  (if (map? x)
+    x
+    {}))
+
 (defn create-after-fetch-event [id after]
   (reg-event-fx
    (after-fetch-event-name id)
@@ -20,7 +25,7 @@
        (merge dispatch-data
               {:db (-> db
                        (assoc-in [:crud-components id :resource-info] response)
-                       (assoc-in [:crud-components id :ui :user-input] response))})))))
+                       (update-in [:crud-components id :ui :user-input] merge (ignore-lists response)))})))))
 
 (defn create-fetch-event [id {:keys [operation-id after]
                               :as fetch-event-params} config]
@@ -34,9 +39,10 @@
 (defn create-perform-event [id {:keys [operation-id after]
                                 :as perform-event-params} config]
   (reg-event-fx (perform-event-name id)
-                (fn [{:keys [db]} [_]]
-                  (let [user-input (get-in db [:crud-components id :ui :user-input])]
-                    {:dispatch [:crud-http-request id operation-id user-input (:service-name config) after]})))
+                (fn [{:keys [db]} [_ params]]
+                  (let [user-input (get-in db [:crud-components id :ui :user-input])
+                        req-params (merge params user-input)]
+                    {:dispatch [:crud-http-request id operation-id req-params (:service-name config) after]})))
   (perform-event-name id))
 
 (defn events [{:keys [id fetch perform config] :as params}]
