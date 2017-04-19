@@ -71,19 +71,19 @@
        (map (fn [[oid [action]]] [oid action]))
        (into {})))
 
-(defn get-swagger-spec [service-name]
+(defn get-swagger-spec [service-name service-config]
   (client/make-request
    :crud-swagger-parse
    :get
-   "/swagger.json"
+   (:swagger-url service-config)
    nil
    :on-success [:crud-swagger-parse service-name]))
 
 (defn init []
   (reg-event-db
    :crud-swagger-get
-   (fn [db [_ service-name]]
-     (get-swagger-spec service-name)
+   (fn [db [_ service-name service-config]]
+     (get-swagger-spec service-name service-config)
      db))
 
   (reg-event-db
@@ -91,6 +91,5 @@
    (fn [db [_ service-name response]]
      (let [{:keys [dispatch-on-ready service-config-path]}
            (get-in db [:crud-service-configs service-name])]
-
        (dispatch dispatch-on-ready)
        (assoc-in db [:crud-service-configs service-name :operations] (parse response))))))

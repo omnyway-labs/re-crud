@@ -18,7 +18,7 @@
                                          {:keys [fetch form] :as params}]]
   (let [dispatch (if (:fetch events) {:dispatch [(:fetch events) fetch]})]
     (merge dispatch
-           {:db (assoc-in db [:crud-components id :ui :user-input] form)})))
+           {:db (update-in db [:crud-components id :ui :user-input] merge form)})))
 
 (defn register-events []
   (reg-event-fx :crud-load-component crud-load-component)
@@ -31,11 +31,12 @@
    :crud-http-request
    (fn [db [_ id operation-id params service-name on-success]]
      (let [service-config (get-in db [:crud-service-configs service-name])
+           service-host (:service-host service-config)
            {:keys [url method request-schema categories resource-type] :as operation}
            (get-in service-config [:operations operation-id])]
        (client/make-request operation-id
                             method
-                            (client/make-url url params)
+                            (client/make-url service-host url params)
                             (coerce/request params request-schema)
                             :on-success [:crud-received-response id on-success])
        db)))

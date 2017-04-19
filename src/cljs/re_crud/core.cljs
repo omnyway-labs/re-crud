@@ -4,10 +4,8 @@
             [re-frame.core :as re-frame :refer [dispatch reg-event-db]]))
 
 (defn init-service [db service-name service-config]
-  (let [service-config-on-file (get-in db [:config service-name])
-        merged-config (merge service-config service-config-on-file)]
-    (dispatch [:crud-swagger-get service-name])
-    (assoc-in db [:crud-service-configs service-name] merged-config)))
+  (dispatch [:crud-swagger-get service-name service-config])
+  (assoc-in db [:crud-service-configs service-name] service-config))
 
 (defn init [service-configs]
   (events/register-events)
