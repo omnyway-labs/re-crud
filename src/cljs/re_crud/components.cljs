@@ -12,7 +12,9 @@
 
 (defn reagent-component [id form view events config comp-type]
   (let [component (get-in skins [(:skin view) comp-type])]
-    (component id form view events config)))
+    (if component
+      (component id form view events config)
+      [:p "No CRUD Component defined"])))
 
 (defn new [comp-type {:keys [id form fetch perform view config] :as params}]
   (let [events (e/events params)]
@@ -25,3 +27,4 @@
 (def list (partial new :list))
 (def create (partial new :create))
 (def update (partial new :update))
+(def delete (partial new :delete))
