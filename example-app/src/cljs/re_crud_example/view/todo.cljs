@@ -15,7 +15,7 @@
 
 (def user-list-actions
   (mui/actions {:resource-name :merchant
-                :actions {"Select" {:dispatch-fn (fn [user]
+                :actions {"Todos" {:dispatch-fn (fn [user]
                                                    (fn [& _]
                                                      (dispatch [:ui :todo-user (:id user)])
                                                      (dispatch [:crud-load-component list {:fetch {:user-id (:id user)}}])))}}}))
