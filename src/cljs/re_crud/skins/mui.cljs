@@ -18,9 +18,7 @@
      (doall (for [[action-name {:keys [dispatch-fn enabled?]
                                 :or {enabled? (constantly true)} :as action}] actions]
               ^{:key (str resource-name action-name)}
-              [:li.crud-mui-action-item [:button {:on-click (dispatch-fn resource)
-                                         :class "mui-btn mui-btn--primary mui-btn--small"
-                                         :disabled (not (enabled? resource))} action-name]]))]))
+              [:li.crud-mui-action-item [:a {:on-click (dispatch-fn resource)} action-name]]))]))
 
 (defn list [id form view events config]
   (fn []

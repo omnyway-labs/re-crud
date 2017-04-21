@@ -4,9 +4,18 @@
     padding: 0;
 }
 
+.crud-mui-action-item:last-child {
+    border-right: 0;
+    padding-right: 0;
+}
+
+
 .crud-mui-action-item {
+    cursor: pointer;
     display: inline;
     margin-left: 5px;
+    border-right: 1px solid black;
+    padding-right: 5px;
 }
 
 .content-sub-panel {
