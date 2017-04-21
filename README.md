@@ -26,9 +26,9 @@ Initialize `re-crud` soon after you initialize your re-frame app db.
 
 The event `dispatch-on-ready` event from service config is dispatched once `re-crud` has parsed the swagger spec for that service.
 
-Use component-generators from `re-crud.components`  to generate the view compnent and associated events.
+Add [crud.css](css/crud.css) in your app for styling. `re-crud` comes with a skin that appies [MUI CSS](https://www.muicss.com/).
 
-`re-crud` comes with a skin that appies [MUI CSS](https://www.muicss.com/).
+Use component-generators from `re-crud.components`  to generate the view compnent and associated events.
 
 A simple component to retrieve and display a resource would look like this.
 
