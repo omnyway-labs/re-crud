@@ -1,5 +1,7 @@
 # re-crud
 
+[![Clojars Project](https://img.shields.io/clojars/v/org.omnyway/re-crud.svg)](https://clojars.org/org.omnyway/re-crud)
+
 A re-frame library for developing CRUD applications.
 
 If your service exposes a swagger API, even better! This can consume
