@@ -14,24 +14,29 @@ swagger.json and perform HTTP calls to show, list, create and update resources.
 ## Installation
 re-crud is (will be) on clojars: `[re-crud "0.1.0"]`
 
-## Usage
+## Example app
+- There is a comprehensive example-app in this repo: [example-app](example-app/)
+- You can find a running instance of this app here: [demo](https://omnypay.github.io/re-crud/)
+- This uses a fairly minimal CRUD web service written in Rails, deployed here: [web app](https://re-crud-example.herokuapp.com/swagger/index.html)
 
-The [example-app](example-app/) uses all features of `re-crud`.
+## Usage
 
 Initialize `re-crud` soon after you initialize your re-frame app db.
 `re-crud.core/init` takes a map of `service-name`:`config` pairs.
 
 ```clojure
-{"re-crud-example" {:service-host "https://my-service.host"
-                    :swagger-url "https://my-service.host/swagger.json"
-                    :dispatch-on-ready [:on-ready]}}
+(require '[re-crud.core :as crud])
+(crud/init
+ {"service-name" {:service-host "https://my-service.host"
+                  :swagger-url "https://my-service.host/swagger.json"
+                  :dispatch-on-ready [:on-ready]}})
 ```
 
-The event `dispatch-on-ready` event from service config is dispatched once `re-crud` has parsed the swagger spec for that service.
+The `dispatch-on-ready` event from service config is dispatched once `re-crud` has parsed the swagger spec for that service. Initialize your views after this event has been triggered.
 
 Add [crud.css](css/crud.css) in your app for styling. `re-crud` comes with a skin that appies [MUI CSS](https://www.muicss.com/).
 
-Use component-generators from `re-crud.components`  to generate the view compnent and associated events.
+Use component-generators from `re-crud.components` to generate the view compnent and associated events.
 
 A simple component to retrieve and display a resource would look like this.
 
@@ -48,6 +53,8 @@ A simple component to retrieve and display a resource would look like this.
 - `:id` identifies the component to the library
 - `:fetch` describes how to fetch the resource to show
 - `:view` configures UI details
+
+TODO: add documentation around `:load-component`
 
 Here's a slightly more involved example:
 
