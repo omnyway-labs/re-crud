@@ -1,6 +1,6 @@
 default: help
 
-test: ## Run tests
+test:: ## Run tests
 	lein do clean, doo phantom test once
 
 .PHONY: help
