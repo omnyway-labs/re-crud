@@ -84,6 +84,10 @@ Here's an example of what you''d get on creating a component
 - `:events` are `id`s of the re-frame events you can dispatch
 - `:events :refresh` needs to be implemented by the user
 
+## Running tests
+
+`make test` (requires phantomjs)
+
 ## License - Apache 2.0
 
 Copyright 2017 Omnyway Inc.
