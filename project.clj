@@ -28,7 +28,8 @@
                                   [ring/ring-json "0.4.0"]]
                    :source-paths ["test/clj"]}}
   :plugins [[lein-cljsbuild "1.1.4"]
-            [lein-doo "0.1.7"]]
+            [lein-doo "0.1.7"]
+            [lein-print "0.1.0"]]
 
   :min-lein-version "2.5.3"
   :doo {:paths {:phantom "phantomjs --web-security=false"}}
