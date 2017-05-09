@@ -20,7 +20,7 @@
                  [org.clojure/clojurescript "1.9.229"]
                  [reagent "0.6.0"]
                  [re-frame "0.9.2"]
-                 [re-crud "0.1.0"]]
+                 [org.omnyway/re-crud "0.1.0"]]
 
   :plugins [[lein-cljsbuild "1.1.4"]]
 
