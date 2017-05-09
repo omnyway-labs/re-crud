@@ -25,14 +25,15 @@
                                   [bidi "2.0.13"]
                                   [ring/ring-core "1.5.0"]
                                   [ring/ring-devel "1.5.0"]
-                                  [ring/ring-json "0.4.0"]]}}
+                                  [ring/ring-json "0.4.0"]]
+                   :source-paths ["test/clj"]}}
   :plugins [[lein-cljsbuild "1.1.4"]
             [lein-doo "0.1.7"]]
 
   :min-lein-version "2.5.3"
   :doo {:paths {:phantom "phantomjs --web-security=false"}}
 
-  :source-paths ["test/clj"]
+  :source-paths ["src/cljs"]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
