@@ -21,14 +21,18 @@
                  [camel-snake-kebab "0.4.0"]
                  [cljsjs/reactable "0.14.1-0"]]
 
+  :profiles {:dev {:dependencies [[http-kit "2.2.0"]
+                                  [bidi "2.0.13"]
+                                  [ring/ring-core "1.5.0"]
+                                  [ring/ring-devel "1.5.0"]
+                                  [ring/ring-json "0.4.0"]]}}
   :plugins [[lein-cljsbuild "1.1.4"]
             [lein-doo "0.1.7"]]
-  :hooks [leiningen.cljsbuild]
-  :min-lein-version "2.5.3"
 
+  :min-lein-version "2.5.3"
   :doo {:paths {:phantom "phantomjs --web-security=false"}}
 
-  :source-paths ["src/cljs"]
+  :source-paths ["test/clj"]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
@@ -43,7 +47,7 @@
                     :closure-defines {goog.DEBUG false}}}
     {:id "test"
      :source-paths ["src/cljs" "test/cljs"]
-     :compiler     {:output-dir      ".cljsbuild/re-crud"
+     :compiler     {:output-dir      ".cljsbuild/re-crud-test"
                     :output-to       "re-crud-test.js"
                     :main            re-crud.test-runner
                     :pretty-print    true}}]})

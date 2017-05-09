@@ -13,8 +13,8 @@
 
 (defn init []
   (crud/init
-   {"test-service" {:service-host "https://re-crud-example.herokuapp.com"
-                    :swagger-url "https://re-crud-example.herokuapp.com/api/swagger.json"
+   {"test-service" {:service-host "http://localhost:8000"
+                    :swagger-url "http://localhost:8000/swagger.json"
                     :dispatch-on-ready [:on-ready]}}))
 
 (defn create-components [{:keys [db]} _]
@@ -28,23 +28,21 @@
                                           :after (u/create-fx (fn [response]
                                                                 (re-frame/dispatch [:assert! :perform response])))}
                                 :config  {:service-name "test-service"}})]
-    (prn (dissoc component :reagent-component))
-    {:dispatch-n [[:crud-load-component component {:fetch {:user-id 23}
-                                                   :form  {:user-id 23}}]
+    {:dispatch-n [[:crud-load-component component {:fetch {:user-id 1}
+                                                   :form  {:user-id 1}}]
                   [:assert! :create-components]]}))
 
 (defn invoke-perform [{:keys [db]} _]
   (let [data (-> (get-in db (u/resource-path :user.update))
-                 (assoc :user-id 23))]
+                 (assoc :user-id 1))]
     {:db (assoc-in db (u/user-input-path :user.update) data)
      :dispatch [:crud-perform-user.update]}))
-
 
 (defn create-components-assertions []
   (is (some? (registrar/get-handler :event :crud-fetch-user.update)))
   (is (some? (registrar/get-handler :event :crud-perform-user.update))))
 
-(defn assert! [{:keys [db]} [_ thing-to-test test-data]]
+(defn assert! [{:keys [db]} [_ thing-to-test]]
   (swap! things-to-test disj thing-to-test)
   (case thing-to-test
     :create-components (create-components-assertions)
