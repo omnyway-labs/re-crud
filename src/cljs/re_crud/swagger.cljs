@@ -9,7 +9,7 @@
   [{:keys [type] :as schema}]
   (cw/prewalk
    (fn [x]
-     (if (and (map? x) (:type x))
+     (if (and (map? x) (:type x) (string? (:type x)))
        (:type x)
        x))
    schema))
