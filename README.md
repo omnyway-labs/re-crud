@@ -10,10 +10,6 @@ swagger.json and perform HTTP calls to show, list, create and update resources.
 
 ![example-interface-screencast](https://media.giphy.com/media/zzYgeqXRUO9fG/giphy.gif "re-crud example interface")
 
-
-## Installation
-re-crud is (will be) on clojars: `[re-crud "0.1.0"]`
-
 ## Example app
 - There is a comprehensive example-app in this repo: [example-app](example-app/)
 - You can find a running instance of this app here: [demo](https://omnypay.github.io/re-crud/)
