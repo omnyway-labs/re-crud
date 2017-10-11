@@ -35,6 +35,7 @@
   (let [request {:method method :url url :body request-body}
         log-id (random-uuid)
         action (get actions method)]
+    (prn url)
     (action url
           {:params request-body
            :format :json

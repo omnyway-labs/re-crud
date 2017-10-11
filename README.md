@@ -93,6 +93,8 @@ Here's an example of what you''d get on creating a component
 
 ## Running tests
 
+Run mock server: `lein run -m re-crud.mock-http-server`
+
 `make test` (requires phantomjs)
 
 ## License - Apache 2.0
