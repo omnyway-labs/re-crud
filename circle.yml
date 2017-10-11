@@ -1,0 +1,10 @@
+machine:
+  java:
+    version: oraclejdk8
+
+test:
+  override:
+    - lein run -m re-crud.mock-http-server:
+        background: true
+    - for i in `seq 120`; do nc -v -w 1 localhost 8000 && break ; sleep 1; done
+    - make test
