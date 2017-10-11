@@ -1,5 +1,6 @@
 (ns re-crud.events
   (:require [re-frame.core :refer [reg-event-db dispatch reg-sub reg-event-fx]]
+            [re-crud.notifications :as notifications]
             [re-crud.coerce :as coerce]
             [re-crud.http-client :as client]))
 
@@ -50,6 +51,5 @@
   (reg-event-db
    :crud-http-fail
    (fn [db [_ operation-id status response]]
-     (prn operation-id status response)
      (dispatch [:crud-notify operation-id status response])
      db)))
