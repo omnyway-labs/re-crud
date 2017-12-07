@@ -1,5 +1,8 @@
 #Changelog
 
+## [0.1.3] - 2017-12-07
+- Coerce `number` type to floats
+
 ## [0.1.2] - 2017-10-11
 - Remove a prn that printed urls for every http request
 
