@@ -18,6 +18,9 @@
         (= "integer" schema-type)
         (js/parseInt param)
 
+        (= "number" schema-type)
+        (.parseFloat js/Number param)
+
         (= "boolean" schema-type)
         (case (str param)
           "true" true
