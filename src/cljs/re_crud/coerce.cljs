@@ -19,7 +19,7 @@
         (js/parseInt param)
 
         (= "number" schema-type)
-        (.parseFloat js/Number param)
+        (js/parseFloat param)
 
         (= "boolean" schema-type)
         (case (str param)
