@@ -5,12 +5,20 @@
             [re-crud.http-client :as client]
             [re-frame.core :refer [reg-event-db dispatch]]))
 
+(defn param-schema [{:keys [type enum] :as schema}]
+  (if enum
+    enum
+    type))
+
 (defn minimize-schema
   [{:keys [type] :as schema}]
   (cw/prewalk
    (fn [x]
      (if (and (map? x) (:type x) (string? (:type x)))
-       (:type x)
+       (-> x
+           (select-keys [:type :enum])
+           (update :enum #(not-empty (set %)))
+           param-schema)
        x))
    schema))
 
