@@ -31,7 +31,7 @@
 
 (defn form-field [id classes param-path param-schema param-value operation-id]
   (let [ui-param-value (subscribe (vec (concat [:crud-components id :ui :user-input] param-path)))]
-    (fn [id classes param-path param-value operation-id]
+    (fn [id classes param-path param-schema param-value operation-id]
       [:div.crud-form-field {:class (:form-field classes)}
        [:label.crud-form-label
         {:for param-path :class "control-label"}
