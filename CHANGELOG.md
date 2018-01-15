@@ -1,5 +1,8 @@
 #Changelog
 
+## [0.1.5] - 2018-01-15
+- Fix to reflect param-schema edits in UI
+
 ## [0.1.4] - 2018-01-15
 - Parse enum params in swagger schema to sets in service-config
 - Use select-fields for enums and booleans
