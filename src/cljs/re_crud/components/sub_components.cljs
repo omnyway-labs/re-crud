@@ -4,24 +4,54 @@
             [re-crud.util :as util]
             [re-crud.native-components :as nc]))
 
-(defn display-param-name [param-name]
-  (s/join "-" (map util/display-name param-name)))
+(defn display-param-name [param-path]
+  (s/join "-" (map util/display-name param-path)))
 
-(defn set-param [id param-name param-value]
-  (dispatch (vec (concat [:crud-components id :ui :user-input] param-name [param-value]))))
+(defn set-param [id param-path param-value]
+  (dispatch (vec (concat [:crud-components id :ui :user-input] param-path [param-value]))))
 
-(defn form-field [id classes param-name param-value operation-id]
-  (let [ui-param-value (subscribe (vec (concat [:crud-components id :ui :user-input] param-name)))]
-    (fn [id classes param-name param-value operation-id]
+(defn select-field [id classes param-path value options]
+  (let [on-change #(set-param id param-path (util/target-value %))]
+    [:div {:class (:select-field classes)}
+     [:select {:id param-path
+               :class "crud-form-input"
+               :on-change on-change
+               :value value}
+      (doall
+       (for [option options]
+         ^{:key (util/rand-key)}[:option option]))]]))
+
+(defn bool-str [ui-value param-value]
+  (or (when (some? ui-value)
+        (str ui-value))
+
+      (if (some? param-value)
+        (str param-value)
+        "false")))
+
+(defn form-field [id classes param-path param-schema param-value operation-id]
+  (let [ui-param-value (subscribe (vec (concat [:crud-components id :ui :user-input] param-path)))]
+    (fn [id classes param-path param-value operation-id]
       [:div.crud-form-field {:class (:form-field classes)}
        [:label.crud-form-label
-        {:for param-name :class "control-label"}
-        (display-param-name param-name)]
-       [:input.crud-form-input
-        {:id param-name
-         :class (:input classes)
-         :value @ui-param-value
-         :on-change #(set-param id param-name (util/target-value %))}]])))
+        {:for param-path :class "control-label"}
+        (display-param-name param-path)]
+       (cond (set? param-schema)
+             [select-field id classes param-path
+              (or @ui-param-value param-value (first param-schema))
+              param-schema]
+
+             (= "boolean" param-schema)
+             [select-field id classes param-path
+              (bool-str @ui-param-value param-value)
+              ["true" "false"]]
+
+             :else
+             [:input.crud-form-input
+              {:id param-path
+               :class (:input classes)
+               :value @ui-param-value
+               :on-change #(set-param id param-path (util/target-value %))}])])))
 
 (defn form [id view operation params on-submit]
   (fn [id view operation params on-submit]
@@ -32,9 +62,9 @@
        [:legend (util/display-name operation-id)]
        [:p.crud-form-operation-summary summary]
        (doall
-        (for [param-name (util/paths editable-schema)]
-          ^{:key (str id param-name)}
-          [form-field id classes param-name (get-in params param-name) operation-id]))
+        (for [param-path (util/paths editable-schema)]
+          ^{:key (str id param-path)}
+          [form-field id classes param-path (get-in params param-path) operation-id]))
        [:button.crud-button {:on-click #(dispatch [on-submit])
                              :class (:button classes)} "Submit"]])))
 
