@@ -1,5 +1,9 @@
 #Changelog
 
+## [0.1.4] - 2018-01-15
+- Parse enum params in swagger schema to sets in service-config
+- Use select-fields for enums and booleans
+
 ## [0.1.3] - 2017-12-07
 - Coerce `number` type to floats
 
