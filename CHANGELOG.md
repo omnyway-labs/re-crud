@@ -1,4 +1,8 @@
-#Changelog
+# Changelog
+
+## [0.1.6] - 2018-01-16
+- Add "Select" option in select to to dismiss the impression that default value is selected, which is not.
+- Support custom form field components
 
 ## [0.1.5] - 2018-01-15
 - Fix to reflect param-schema edits in UI
