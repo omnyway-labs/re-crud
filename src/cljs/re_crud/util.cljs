@@ -42,3 +42,8 @@
   (->> kv-map
        (map (fn [[k v]] [k (f v)]))
        (into {})))
+
+(defn ->vector [x]
+  (if-not (vector? x)
+    (vector x)
+    x))

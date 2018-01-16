@@ -29,14 +29,24 @@
         (str param-value)
         "false")))
 
-(defn form-field [id classes param-path param-schema param-value operation-id]
-  (let [ui-param-value (subscribe (vec (concat [:crud-components id :ui :user-input] param-path)))]
-    (fn [id classes param-path param-schema param-value operation-id]
+(defn vectorize-keys [m]
+  (->> m
+       (map (fn [[k v]] [(util/->vector k) v]))
+       (into {})))
+
+(defn form-field [id view param-path param-schema param-value operation-id]
+  (let [ui-param-value (subscribe (vec (concat [:crud-components id :ui :user-input] param-path)))
+        classes (:classes view)
+        fields (vectorize-keys (:fields view))]
+    (fn [id view param-path param-schema param-value operation-id]
       [:div.crud-form-field {:class (:form-field classes)}
        [:label.crud-form-label
         {:for param-path :class "control-label"}
         (display-param-name param-path)]
-       (cond (set? param-schema)
+       (cond (some? (get fields param-path))
+             [(get fields param-path) id classes param-path @ui-param-value param-schema param-value]
+
+             (set? param-schema)
              [select-field id classes param-path
               (or @ui-param-value param-value "Select")
               param-schema]
@@ -64,7 +74,7 @@
        (doall
         (for [param-path (util/paths editable-schema)]
           ^{:key (str id param-path)}
-          [form-field id classes param-path (get-in params param-path) operation-id]))
+          [form-field id view param-path (get-in params param-path) operation-id]))
        [:button.crud-button {:on-click #(dispatch [on-submit])
                              :class (:button classes)} "Submit"]])))
 
