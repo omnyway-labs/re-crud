@@ -18,7 +18,7 @@
                :on-change on-change
                :value value}
       (doall
-       (for [option options]
+       (for [option (cons "Select" options)]
          ^{:key (util/rand-key)}[:option option]))]]))
 
 (defn bool-str [ui-value param-value]
@@ -38,7 +38,7 @@
         (display-param-name param-path)]
        (cond (set? param-schema)
              [select-field id classes param-path
-              (or @ui-param-value param-value (first param-schema))
+              (or @ui-param-value param-value "Select")
               param-schema]
 
              (= "boolean" param-schema)
