@@ -17,9 +17,12 @@
 (defn crud-load-component [{:keys [db]} [_
                                          {:keys [id events] :as component}
                                          {:keys [fetch form] :as params}]]
-  (let [dispatch (if (:fetch events) {:dispatch [(:fetch events) fetch]})]
-    (merge dispatch
-           {:db (update-in db [:crud-components id :ui :user-input] merge form)})))
+  (let [dispatch-events (concat []
+                                (when (:fetch events) [[(:fetch events) fetch]])
+                                (when (:form-event events) [[(:form-event events)]]))]
+    (merge
+     (when-not (empty? dispatch-events) {:dispatch-n dispatch-events})
+     {:db (update-in db [:crud-components id :ui :user-input] merge form)})))
 
 (defn register-events []
   (reg-event-fx :crud-load-component crud-load-component)

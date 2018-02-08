@@ -45,8 +45,9 @@
                     {:dispatch [:crud-http-request id operation-id req-params (:service-name config) after]})))
   (perform-event-name id))
 
-(defn events [{:keys [id fetch perform config] :as params}]
+(defn events [{:keys [id fetch form perform config] :as params}]
   {:fetch       (when fetch (create-fetch-event id fetch config))
    :after-fetch (when fetch (after-fetch-event-name id))
+   :form-event  (:event form)
    :perform     (when perform (create-perform-event id perform config))
    :refresh     (refresh-event-name id)})
