@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.1.7] - 2018-02-08
+- Dispatch `before-form` event on `crud-load-component`
+
 ## [0.1.6] - 2018-01-16
 - Add "Select" option in select to to dismiss the impression that default value is selected, which is not.
 - Support custom form field components
