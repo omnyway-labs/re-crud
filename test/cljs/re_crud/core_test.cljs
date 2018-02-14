@@ -35,21 +35,27 @@
 (defn invoke-perform [{:keys [db]} _]
   (let [data (-> (get-in db (u/resource-path :user.update))
                  (assoc :user-id 1))]
-    {:db (assoc-in db (u/user-input-path :user.update) data)
-     :dispatch [:crud-perform-user.update]}))
+    {:dispatch-n [[:crud-components :user.update :ui :user-input :email "updatedemail@example.com"]
+                  [:crud-components :user.update :ui :user-input :user-id 1]
+                  [:crud-perform-user.update]]}))
 
 (defn create-components-assertions []
   (is (some? (registrar/get-handler :event :crud-fetch-user.update)))
   (is (some? (registrar/get-handler :event :crud-perform-user.update))))
 
-(defn assert! [{:keys [db]} [_ thing-to-test]]
+(defn update-assertions [data]
+  (is (= (set (keys data))
+         #{:id :first_name :last_name :email :created_at :updated_at :url}))
+  (is (= "updatedemail@example.com"
+         (:email data))))
+
+(defn assert! [{:keys [db]} [_ thing-to-test data]]
   (swap! things-to-test disj thing-to-test)
   (case thing-to-test
     :create-components (create-components-assertions)
     :fetch             (is (= (set (keys (get-in db (u/resource-path :user.update))))
                               #{:id :first_name :last_name :email :created_at :updated_at :url}))
-    :perform           (is (= (set (keys (get-in db (u/resource-path :user.update))))
-                              #{:id :first_name :last_name :email :created_at :updated_at :url})))
+    :perform (update-assertions data))
   (if (empty? @things-to-test)
     {:done []}
     {}))

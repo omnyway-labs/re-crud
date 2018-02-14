@@ -13,8 +13,8 @@
 (defn get-user [_]
   (response/response data/user))
 
-(defn update-user [_]
-  (response/response data/user))
+(defn update-user [{:keys [body] :as request}]
+  (response/response (merge data/user (select-keys body [:first_name :last_name :email]))))
 
 (def handler
   (bidi/make-handler
