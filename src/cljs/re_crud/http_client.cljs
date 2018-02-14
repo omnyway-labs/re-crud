@@ -7,11 +7,11 @@
 (defn log [& args]
   (.log js/console :info args))
 
-(defn make-url [host url request-params]
+(defn make-url [service-url url request-params]
   (->> (reduce (fn [u [k v]] (s/replace u (str "{"(name k)"}") v))
                url
                request-params)
-       (str host)))
+       (str service-url)))
 
 (defn parse-json-string [string]
   (js->clj (.parse js/JSON string)))

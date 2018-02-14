@@ -23,7 +23,7 @@ Initialize `re-crud` soon after you initialize your re-frame app db.
 ```clojure
 (require '[re-crud.core :as crud])
 (crud/init
- {"service-name" {:service-host "https://my-service.host"
+ {"service-name" {:service-url "https://my-service.host"
                   :swagger-url "https://my-service.host/swagger.json"
                   :dispatch-on-ready [:on-ready]}})
 ```
