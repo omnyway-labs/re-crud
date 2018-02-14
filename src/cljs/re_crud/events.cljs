@@ -42,7 +42,8 @@
                             method
                             (client/make-url service-url url params)
                             (coerce/request params request-schema)
-                            :on-success [:crud-received-response id on-success])
+                            :on-success [:crud-received-response id on-success]
+                            :service-name service-name)
        db)))
 
   (reg-event-db

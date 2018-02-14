@@ -31,13 +31,13 @@
    :patch  ajax/PATCH
    :delete ajax/DELETE})
 
-(defn make-request [operation-id method url request-body & {:keys [on-success]}]
-  (let [request {:method method :url url :body request-body}
-        log-id (random-uuid)
+(defn make-request [operation-id method url request-body & {:keys [on-success service-name]}]
+  (let [log-id (random-uuid)
         action (get actions method)]
     (action url
-          {:params request-body
-           :format :json
-           :handler #(response-handler log-id request-body % operation-id  on-success)
-           :error-handler (fn [status status-text]
-                            (dispatch [:crud-http-fail operation-id status status-text]))})))
+            {:params request-body
+             :headers {"x-re-crud-service" service-name}
+             :format :json
+             :handler #(response-handler log-id request-body % operation-id  on-success)
+             :error-handler (fn [status status-text]
+                              (dispatch [:crud-http-fail operation-id status status-text]))})))

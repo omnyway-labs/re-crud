@@ -91,7 +91,8 @@
    :get
    (:swagger-url service-config)
    nil
-   :on-success [:crud-swagger-parse service-name]))
+   :on-success [:crud-swagger-parse service-name]
+   :service-name service-name))
 
 (defn init []
   (reg-event-db
