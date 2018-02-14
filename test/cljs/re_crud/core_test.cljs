@@ -13,7 +13,7 @@
 
 (defn init []
   (crud/init
-   {"test-service" {:service-host "http://localhost:8000"
+   {"test-service" {:service-url "http://localhost:8000"
                     :swagger-url "http://localhost:8000/swagger.json"
                     :dispatch-on-ready [:on-ready]}}))
 
