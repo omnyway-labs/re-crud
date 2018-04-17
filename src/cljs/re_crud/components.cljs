@@ -19,6 +19,7 @@
 (defn new [comp-type {:keys [id form fetch perform view config] :as params}]
   (let [events (e/events params)]
     {:id id
+     :type comp-type
      :events events
      :reagent-component (reagent-component id form view events config comp-type)
      :state-path (u/state-path id)}))
