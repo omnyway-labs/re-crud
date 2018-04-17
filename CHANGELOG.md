@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.1.9] - 2018-04-17
+- Clear previous user inputs when loading create-components
+
 ## [0.1.8] - 2018-02-14
 - Rename `service-host` to `service-url` in service-config
 - Send `x-re-crud-service` header in requests
