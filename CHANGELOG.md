@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.1.10] - 2018-06-14
+- Support requests with a list as body params
+
 ## [0.1.9] - 2018-04-17
 - Clear previous user inputs when loading create-components
 
