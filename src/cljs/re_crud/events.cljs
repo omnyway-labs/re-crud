@@ -43,8 +43,9 @@
        (client/make-request operation-id
                             method
                             (client/make-url service-url url (or url-params
-                                                                 (and (map? params)
-                                                                      params)))
+                                                                 (if (map? params)
+                                                                   params
+                                                                   {})))
                             (coerce/request params request-schema)
                             :on-success [:crud-received-response id on-success]
                             :service-name service-name)
