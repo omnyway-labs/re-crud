@@ -15,6 +15,10 @@
              (sequential? schema-type))
         (mapv #(request % (first schema-type)) (vals param))
 
+        (and (sequential? param)
+             (sequential? schema-type))
+        (mapv #(request % (first schema-type)) param)
+
         (= "integer" schema-type)
         (js/parseInt param)
 
@@ -36,10 +40,12 @@
           path-values))
 
 (defn request [param schema]
-  (->> (for [path (util/paths schema)
-             :let [param-value (get-in param path)
-                   param-schema (get-in schema path)]
-             :when (not (contains? #{nil ""} param-value))]
-         [path (coerce-param param-value param-schema)])
-       (into {})
-       ->map))
+  (if (map? schema)
+    (->> (for [path (util/paths schema)
+               :let [param-value (get-in param path)
+                     param-schema (get-in schema path)]
+               :when (not (contains? #{nil ""} param-value))]
+           [path (coerce-param param-value param-schema)])
+         (into {})
+         ->map)
+    (coerce-param param schema)))
