@@ -15,6 +15,10 @@
              (sequential? schema-type))
         (mapv #(request % (first schema-type)) (vals param))
 
+        (and (sequential? param)
+             (sequential? schema-type))
+        (mapv #(request % (first schema-type)) param)
+
         (= "integer" schema-type)
         (js/parseInt param)
 
