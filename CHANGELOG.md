@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.1.11] - 2018-07-12
+- Dispatch optional `on-failure` event for http failures
+
 ## [0.1.10] - 2018-06-14
 - Support requests with a list as body params
 
