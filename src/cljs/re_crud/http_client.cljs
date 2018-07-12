@@ -31,7 +31,7 @@
    :patch  ajax/PATCH
    :delete ajax/DELETE})
 
-(defn make-request [operation-id method url request-body & {:keys [on-success service-name]}]
+(defn make-request [operation-id method url request-body & {:keys [on-success service-name on-failure]}]
   (let [log-id (random-uuid)
         action (get actions method)]
     (action url
@@ -40,4 +40,6 @@
              :format :json
              :handler #(response-handler log-id request-body % operation-id  on-success)
              :error-handler (fn [status status-text]
+                              (when (some? on-failure)
+                                (dispatch [on-failure status status-text]))
                               (dispatch [:crud-http-fail operation-id status status-text]))})))

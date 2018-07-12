@@ -35,7 +35,7 @@
 
   (reg-event-db
    :crud-http-request
-   (fn [db [_ id operation-id params service-name on-success url-params]]
+   (fn [db [_ id operation-id params service-name on-success url-params on-failure]]
      (let [service-config (get-in db [:crud-service-configs service-name])
            service-url (:service-url service-config)
            {:keys [url method request-schema categories resource-type] :as operation}
@@ -48,6 +48,7 @@
                                                                    {})))
                             (coerce/request params request-schema)
                             :on-success [:crud-received-response id on-success]
+                            :on-failure on-failure
                             :service-name service-name)
        db)))
 
