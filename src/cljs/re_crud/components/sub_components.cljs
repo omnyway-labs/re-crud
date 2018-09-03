@@ -63,6 +63,37 @@
                :value @ui-param-value
                :on-change #(set-param id param-path (util/target-value %))}])])))
 
+(defn data-attrs [resource data-fn]
+  (->> (for [[attr-name attr-value] (data-fn resource)]
+         [(keyword (str "data-" (name attr-name))) attr-value])
+       (into {})))
+
+(defn default-prop-renderer [m]
+  {:field (:field m)
+   :column-name (name (:field m))
+   :display-fn str
+   :header (s/capitalize (name (:field m)))
+   :data-fn identity})
+
+(defn make-prop-renderer [p]
+  (cond
+    (map? p)
+    (merge (default-prop-renderer p) p)
+
+    (vector? p)
+    {:field (first p)
+     :column-name (name (first p))
+     :display-fn (second p)
+     :header (s/capitalize (name (first p)))
+     :data-fn identity}
+
+    (or (keyword? p)
+        (string? p))
+    {:field p
+     :column-name (name p)
+     :header (s/capitalize (name p))
+     :data-fn identity
+     :display-fn str}))
 (defn form [id view operation params on-submit]
   (fn [id view operation params on-submit]
     (let [{:keys [operation-id request-schema summary]} operation
@@ -84,36 +115,39 @@
            (conj (vec items) last-item))))
 
 (defn table [view resources-info]
-  (fn [{:keys [classes filter-params fields actions] :as view} resources-info]
-    (let [make-prop-renderer (fn [p]
-                               (if (vector? p)
-                                 p
-                                 [p str]))
-          ps (map make-prop-renderer fields)]
-      [:div.crud-table-container
-       [nc/table {:class (str "crud-table " (:table classes))
-                  :filterable filter-params
-                  :sortable true
-                  :items-per-page 5
-                  :page-button-limit 10
-                  :no-data-text "No matching records found."}
-        [nc/thead {:class "crud-thead"}
-         (row (for [p ps]
-                ^{:key (util/rand-key)}
-                [nc/th {:class "crud-th" :column (name (first p))}
-                 (s/capitalize (name (first p)))])
-              (when actions
-                ^{:key (util/rand-key)}
-                [nc/th {:class "crud-th" :column "actions"} "Actions"]))]
-        (doall
-         (for [resource resources-info]
-           ^{:key (util/rand-key)}
-           [nc/tr {:class "crud-trow"}
-            (row (for [p ps]
-                   ^{:key (util/rand-key)}
-                   [nc/td {:class "crud-td" :column (name (first p))}
-                    ((second p) (get resource (first p)))])
-                 (when actions
-                   ^{:key (util/rand-key)}
-                   [nc/td {:class "crud-td" :column "actions"}
-                    [actions resource]]))]))]])))
+  (let [filter-text (if (:filter-text-sub view)
+                    (subscribe (:filter-text-sub view))
+                    (atom nil))]
+    (fn [{:keys [classes filter-params fields actions filter-text-sub] :as view} resources-info]
+      (let [ps (map make-prop-renderer fields)]
+        [:div.crud-table-container
+         [nc/table (merge {:class (str "crud-table " (:table classes))
+                           :filterable filter-params
+                           :sortable true
+                           :hide-filter-input (:hide-filter-input view)
+                           :items-per-page (or (:items-per-page view) 20)
+                           :page-button-limit 10
+                           :no-data-text "No matching records found."
+                           :on-page-change (or (:on-page-change view) #())}
+                          (when @filter-text {:filter-by @filter-text}))
+          [nc/thead {:class "crud-thead"}
+           (row (for [p ps]
+                  ^{:key (util/rand-key)}
+                  [nc/th {:class "crud-th" :column (:column-name p)}
+                   (:header p)])
+                (when actions
+                  ^{:key (util/rand-key)}
+                  [nc/th {:class "crud-th" :column "actions"} "Actions"]))]
+          (doall
+           (for [resource resources-info]
+             ^{:key (util/rand-key)}
+             [nc/tr {:class "crud-trow"}
+              (row (for [p ps]
+                     ^{:key (util/rand-key)}
+                     [nc/td (merge {:class (str "crud-td " "td-"(:column-name p)) :column (:column-name p)}
+                                   (data-attrs resource (:data-fn p)))
+                      ((:display-fn p) (get resource (:field p)))])
+                   (when actions
+                     ^{:key (util/rand-key)}
+                     [nc/td {:class "crud-td" :column "actions"}
+                      [actions resource]]))]))]]))))

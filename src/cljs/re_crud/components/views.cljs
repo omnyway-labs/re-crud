@@ -7,12 +7,20 @@
 (defn spinner []
   [:p "SPINNER"])
 
+(defn is-active-filter [x]
+  (-> x :is-active boolean))
+
 (defn list [id view]
   (let [resources-info (subscribe [:crud-components id :resource-info])]
     (fn [id view]
-      (if @resources-info
-        [sub/table view @resources-info]
-        [(or (:spinner view) spinner)]))))
+      (let [filter-active? (:filter-active? view)
+            filter-fn (if filter-active?
+                        (or (:filter-fn view) is-active-filter)
+                        (constantly true))
+            filtered-resources (filter filter-fn @resources-info)]
+        (if @resources-info
+          [sub/table view filtered-resources]
+          [(or (:spinner view) spinner)])))))
 
 (defn show [id view]
   (let [resource-info (subscribe [:crud-components id :resource-info])]
