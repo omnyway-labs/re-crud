@@ -4,12 +4,15 @@
             [re-crud.util :as util]
             [re-crud.components.sub-components :as sub]))
 
+(defn spinner []
+  [:p "SPINNER"])
+
 (defn list [id view]
   (let [resources-info (subscribe [:crud-components id :resource-info])]
     (fn [id view]
       (if @resources-info
         [sub/table view @resources-info]
-        [:p "SPINNER"]))))
+        [(or (:spinner view) spinner)]))))
 
 (defn show [id view]
   (let [resource-info (subscribe [:crud-components id :resource-info])]
