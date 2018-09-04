@@ -39,7 +39,7 @@
              :headers {"x-re-crud-service" service-name}
              :format :json
              :handler #(response-handler log-id request-body % operation-id  on-success)
-             :error-handler (fn [status status-text]
+             :error-handler (fn [{:keys [status response]}]
                               (when (some? on-failure)
-                                (dispatch [on-failure status status-text]))
-                              (dispatch [:crud-http-fail operation-id status status-text]))})))
+                                (dispatch [on-failure status response]))
+                              (dispatch [:crud-http-fail operation-id status response]))})))

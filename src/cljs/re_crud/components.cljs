@@ -5,16 +5,20 @@
             [re-crud.components.utils :as u]))
 
 (def skins
-  {:mui {:show mui/show
-         :list mui/list
-         :create mui/create
-         :update mui/update}})
+  (atom {:mui {:show mui/show
+               :list mui/list
+               :create mui/create
+               :update mui/update}}))
+
+(defn add-skin [skin-name comp-type comp]
+  (if-not (get-in @skins [skin-name comp-type])
+    (swap! skins assoc-in [skin-name comp-type] comp)))
 
 (defn reagent-component [id form view events config comp-type]
-  (let [component (get-in skins [(:skin view) comp-type])]
+  (let [component (get-in @skins [(:skin view) comp-type])]
     (if component
       (component id form view events config)
-      [:p "No CRUD Component defined"])))
+      (fn [] [:p "No CRUD Component defined"]))))
 
 (defn new [comp-type {:keys [id form fetch perform view config] :as params}]
   (let [events (e/events params)]
