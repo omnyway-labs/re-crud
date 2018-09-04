@@ -5,7 +5,7 @@
             [re-crud.components.sub-components :as sub]))
 
 (defn spinner []
-  [:p "SPINNER"])
+  [:p "Loading..."])
 
 (defn is-active-filter [x]
   (-> x :is-active boolean))
