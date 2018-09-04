@@ -27,7 +27,7 @@
     (fn []
       [:div.crud-show
        (if-not (some? @resource-info)
-         [:p "Loading..."]
+         [(or (:spinner view) spinner)]
          [:ul.crud-prop-list
           (doall
            (for [[prop-name prop-value] @resource-info]
