@@ -2,6 +2,7 @@
   (:require [re-frame.core :as re-frame :refer [subscribe dispatch]]
             [clojure.string :as s]
             [re-crud.util :as util]
+            [re-crud.components.utils :as cutils]
             [re-crud.native-components :as nc]))
 
 (defn display-param-name [param-path]
@@ -94,18 +95,19 @@
      :header (s/capitalize (name p))
      :data-fn identity
      :display-fn str}))
+
 (defn form [id view operation params on-submit]
   (fn [id view operation params on-submit]
     (let [{:keys [operation-id request-schema summary]} operation
-          {:keys [classes hidden-fields]} view
+          {:keys [classes hidden-fields fields-order]} view
           editable-schema (apply dissoc request-schema hidden-fields)]
       [:div.crud-form {:class (:form classes)}
        [:legend (util/display-name operation-id)]
        [:p.crud-form-operation-summary summary]
        (doall
-        (for [param-path (util/paths editable-schema)]
+        (for [param-path (cutils/paths (cutils/sort-fields fields-order editable-schema))]
           ^{:key (str id param-path)}
-          [form-field id view param-path (get-in params param-path) operation-id]))
+          [form-field id view param-path (get-in editable-schema param-path) (get-in params param-path) operation-id]))
        [:button.crud-button {:on-click #(dispatch [on-submit])
                              :class (:button classes)} "Submit"]])))
 
