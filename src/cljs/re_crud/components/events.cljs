@@ -36,13 +36,16 @@
                    :dispatch [:crud-http-request id operation-id fetch-params (:service-name config) (after-fetch-event-name id)]}))
   (fetch-event-name id))
 
-(defn create-perform-event [id {:keys [operation-id after]
+(defn create-perform-event [id {:keys [operation-id after params-fn]
+                                :or {params-fn identity}
                                 :as perform-event-params} config]
   (reg-event-fx (perform-event-name id)
                 (fn [{:keys [db]} [_ params]]
                   (let [user-input (get-in db [:crud-components id :ui :user-input])
-                        req-params (merge params user-input)]
-                    {:dispatch [:crud-http-request id operation-id req-params (:service-name config) after]})))
+                        req-params (params-fn (merge params user-input))]
+                    (if (some? req-params)
+                      {:dispatch [:crud-http-request id operation-id req-params (:service-name config) after]}
+                      {}))))
   (perform-event-name id))
 
 (defn events [{:keys [id fetch form perform config] :as params}]
