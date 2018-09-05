@@ -22,9 +22,7 @@
                                 (when (:form-event events) [[(:form-event events)]]))]
     (merge
      (when-not (empty? dispatch-events) {:dispatch-n dispatch-events})
-     (if (= type :create)
-       {:db (assoc-in db [:crud-components id :ui :user-input] form)}
-       {:db (update-in db [:crud-components id :ui :user-input] merge form)}))))
+     {:db (assoc-in db [:crud-components id :ui :user-input] form)})))
 
 (defn register-events []
   (reg-event-fx :crud-load-component crud-load-component)
