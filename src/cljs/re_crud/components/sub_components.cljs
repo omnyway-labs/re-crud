@@ -96,6 +96,16 @@
      :data-fn identity
      :display-fn str}))
 
+(defn request-active? [status]
+  (= :active status))
+
+(defn submit-btn [classes operation-id on-submit]
+  (let [request-status (subscribe [:crud-requests operation-id :status])]
+    (fn [classes operation-id on-submit]
+      [:button.crud-button {:on-click #(dispatch [on-submit])
+                            :disabled (request-active? @request-status)
+                            :class    (:button classes)} "Submit"])))
+
 (defn form [id view operation params on-submit]
   (fn [id view operation params on-submit]
     (let [{:keys [operation-id request-schema summary]} operation
@@ -108,8 +118,7 @@
         (for [param-path (cutils/paths (cutils/sort-fields fields-order editable-schema))]
           ^{:key (str id param-path)}
           [form-field id view param-path (get-in editable-schema param-path) (get-in params param-path) operation-id]))
-       [:button.crud-button {:on-click #(dispatch [on-submit])
-                             :class (:button classes)} "Submit"]])))
+       [submit-btn classes operation-id on-submit]])))
 
 (defn row [items last-item]
   (doall

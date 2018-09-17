@@ -24,10 +24,14 @@
      (when-not (empty? dispatch-events) {:dispatch-n dispatch-events})
      {:db (assoc-in db [:crud-components id :ui :user-input] form)})))
 
+(defn add-request-status [db operation-id status]
+  (assoc-in db [:crud-requests operation-id :status] status))
+
 (defn register-events []
   (reg-event-fx :crud-load-component crud-load-component)
   (reg-sub :crud-service-configs (get-in-db :crud-service-configs))
   (reg-sub :crud-components (get-in-db :crud-components))
+  (reg-sub :crud-requests (get-in-db :crud-requests))
 
   (reg-event-db :crud-components (assoc-into-db :crud-components))
 
@@ -45,19 +49,19 @@
                                                                    params
                                                                    {})))
                             (coerce/request params request-schema)
-                            :on-success [:crud-received-response id on-success]
+                            :on-success [:crud-received-response id operation-id on-success]
                             :on-failure on-failure
                             :service-name service-name)
-       db)))
+       (add-request-status db operation-id :active))))
 
   (reg-event-db
    :crud-received-response
-   (fn [db [_ id on-success response]]
+   (fn [db [_ id operation-id on-success response]]
      (when on-success (dispatch [on-success response]))
-     db))
+     (add-request-status db operation-id :done)))
 
   (reg-event-db
    :crud-http-fail
    (fn [db [_ operation-id status response]]
      (dispatch [:crud-notify operation-id status response])
-     db)))
+     (add-request-status db operation-id :failed))))
