@@ -93,6 +93,24 @@ Run mock server: `lein run -m re-crud.mock-http-server`
 
 `make test` (requires phantomjs)
 
+## Dev Workflow
+
+- Change working directory to `example-app`:
+```
+$ cd path/to/re-crud/example-app
+```
+- Start REPL:
+```
+$ rm -rf src/cljs/re_crud
+$ cp -r ../src/cljs/re_crud src/cljs/
+$ lein figwheel
+```
+- Edit files under `example-app/src/cljs/re_crud`
+- Prepare for checking in to vcs:
+```
+$ rsync -a src/cljs/re_crud/ ../src/cljs/re_crud/
+```
+
 ## License - Apache 2.0
 
 Copyright 2017 Omnyway Inc.
