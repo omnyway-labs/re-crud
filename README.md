@@ -93,6 +93,33 @@ Run mock server: `lein run -m re-crud.mock-http-server`
 
 `make test` (requires phantomjs)
 
+## Dev Workflow
+
+`re-crud` is developed against a running HTTP server included
+in this repo under the `example-app/` directory.
+
+```bash
+$ # change working directory to example-app:
+$ cd path/to/re-crud/example-app
+$
+$ # copy re-crud source into the app's source.
+$ # this will:
+$ # * delete a stale copy if it exists
+$ # * override the project's dependency on re-crud
+$ rm -rf src/cljs/re_crud ; cp -r ../src/cljs/re_crud src/cljs/
+$
+$ # start REPL for app
+$ lein figwheel
+```
+
+Now we can edit source files under `example-app/src/cljs/re_crud`.
+
+Before checking the updated code in to VCS, run
+```
+$ # replicate updated re-crud code back into the parent repo:
+$ rm -rf ../src/cljs/re_crud && cp -r src/cljs/re_crud ../src/cljs/
+```
+
 ## License - Apache 2.0
 
 Copyright 2017 Omnyway Inc.
