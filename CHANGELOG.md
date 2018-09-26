@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.1.13] - 2018-09-26
+- Bugfix: Pass path as `nil` when no path is available
+
 ## [0.1.12] - 2018-09-26
 - Make it possible to add skins
 - Table enhancements
