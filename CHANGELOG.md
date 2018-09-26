@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.12] - 2018-09-26
+- Make it possible to add skins
+- Table enhancements
+- Use fields-order to sort form fields
+- Update example-app
+- Fix error-handler in http-client. This fixes the argument for
+  `crud-notify` for HTTP failures
+- Always clear user input on crud-load-component
+- Add perform-params-fn. Support a custom fn to decide whether to send
+  the request and rewrite params
+- Disable form submit buttons when a corresponding request is active
+- Show an error if boolean value in a form is not selected
+
 ## [0.1.11] - 2018-07-12
 - Dispatch optional `on-failure` event for http failures
 
