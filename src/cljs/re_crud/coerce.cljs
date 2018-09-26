@@ -1,5 +1,6 @@
 (ns re-crud.coerce
-  (:require [re-crud.util :as util]))
+  (:require [re-crud.util :as util]
+            [re-frame.core :refer [dispatch]]))
 
 (defn empty-value [t]
   (case t
@@ -10,7 +11,7 @@
 
 (declare request)
 
-(defn coerce-param [param schema-type]
+(defn coerce-param [param schema-type path]
   (cond (and (map? param)
              (sequential? schema-type))
         (mapv #(request % (first schema-type)) (vals param))
@@ -28,7 +29,8 @@
         (= "boolean" schema-type)
         (case (str param)
           "true" true
-          "false" false)
+          "false" false
+          (dispatch [:crud-notify :parse-boolean :fail (str "Please select 'true' or 'false' for " path)]))
 
         :else
         param))
@@ -45,7 +47,7 @@
                :let [param-value (get-in param path)
                      param-schema (get-in schema path)]
                :when (not (contains? #{nil ""} param-value))]
-           [path (coerce-param param-value param-schema)])
+           [path (coerce-param param-value param-schema path)])
          (into {})
          ->map)
     (coerce-param param schema)))
