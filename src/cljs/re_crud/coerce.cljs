@@ -30,7 +30,10 @@
         (case (str param)
           "true" true
           "false" false
-          (dispatch [:crud-notify :parse-boolean :fail (str "Please select 'true' or 'false' for " path)]))
+          (dispatch [:crud-notify :parse-boolean :fail
+                     (str "Please select 'true' or 'false'"
+                          (when path
+                            (str " for " path)))]))
 
         :else
         param))
@@ -50,4 +53,4 @@
            [path (coerce-param param-value param-schema path)])
          (into {})
          ->map)
-    (coerce-param param schema)))
+    (coerce-param param schema nil)))
