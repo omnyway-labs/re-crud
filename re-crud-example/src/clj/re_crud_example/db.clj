@@ -1,4 +1,4 @@
-(ns re-crud-api.db)
+(ns re-crud-example.db)
 
 (defonce DB
   (atom {}))

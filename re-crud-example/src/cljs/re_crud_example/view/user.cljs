@@ -98,8 +98,8 @@
               :view {:title "Users"
                      :skin :mui
                      :new (u/create-fx #(dispatch [:ui :user-action :create]))
-                     :fields [:id :first_name :last_name :email]
-                     :filter-params [:id :first_name :last_name :email]
+                     :fields [:id :first-name :last-name :email]
+                     :filter-params [:id :first-name :last-name :email]
                      :actions list-actions
                      :resource-name "User"}
               :config config/service}))

@@ -1,8 +1,8 @@
-(ns re-crud-api.handler
-  (:require [compojure.api.sweet :refer :all]
+(ns re-crud-example.handler
+  (:require [re-crud-example.db :as db]
             [ring.util.http-response :refer :all]
-            [schema.core :as s]
-            [re-crud-api.db :as db]))
+            [compojure.api.sweet :refer :all]
+            [schema.core :as s]))
 
 (s/defschema UserParams
   {:first-name s/Str
@@ -23,12 +23,12 @@
          {:id s/Int
           :user-id s/Int}))
 
-(def app
+(def handler
   (api
    {:swagger
-    {:ui "/"
+    {:ui "/swagger/"
      :spec "/swagger.json"
-     :data {:info {:title "re-crud-api"
+     :data {:info {:title "re-crud-example"
                    :description "API for re-crud example"}
             :tags [{:name "api", :description "some apis"}]}}}
 
