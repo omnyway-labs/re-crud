@@ -42,7 +42,7 @@
               :fetch {:operation-id "listUsers"}
               :view {:title "Users"
                      :skin :mui
-                     :fields [:first_name :last_name]
+                     :fields [:first-name :last-name]
                      :actions user-list-actions
                      :resource-name "User"}
               :config config/service}))
