@@ -33,11 +33,13 @@
             :tags [{:name "api", :description "some apis"}]}}}
 
    (GET "/users.json" []
+        :swagger {:operationId "listUsers"}
         :return [User]
         :summary "List all Users"
         (ok (db/get-users)))
 
    (POST "/users.json" []
+         :swagger {:operationId "createUser"}
          :return User
          :body [user UserParams]
          :summary "Create a User"
@@ -46,6 +48,7 @@
    (context "/users" []
 
             (GET "/:user-id.json" [user-id]
+                 :swagger {:operationId "getUser"}
                  :return User
                  :path-params [user-id :- s/Int]
                  :summary "Get a User"
@@ -54,6 +57,7 @@
                    (not-found)))
 
             (PATCH "/:user-id.json" [user-id]
+                   :swagger {:operationId "updateUser"}
                    :return User
                    :body [user UserParams]
                    :path-params [user-id :- s/Int]
@@ -63,6 +67,7 @@
                      (not-found)))
 
             (DELETE "/:user-id.json" [user-id]
+                    :swagger {:operationId "deleteUser"}
                     :path-params [user-id :- s/Int]
                     :summary "Delete a User"
                     (if-let [_ (db/delete-user user-id)]
@@ -74,6 +79,7 @@
             :path-params [user-id :- s/Int]
 
             (GET "/todos.json" []
+                 :swagger {:operationId "listTodos"}
                  :return [Todo]
                  :summary "List all Todos for this User"
                  (if-let [user (db/get-user user-id)]
@@ -81,6 +87,7 @@
                    (not-found "User doesn't exist!")))
 
             (POST "/todos.json" []
+                  :swagger {:operationId "createTodo"}
                   :return Todo
                   :body [todo TodoParams]
                   :summary "Create a Todo for a User"
@@ -91,6 +98,7 @@
             (context "/todos" []
 
                      (GET "/:todo-id.json" [todo-id]
+                          :swagger {:operationId "getTodo"}
                           :return Todo
                           :path-params [todo-id :- s/Int]
                           :summary "Get a Todo"
@@ -99,6 +107,7 @@
                             (not-found)))
 
                      (PATCH "/:todo-id.json" [todo-id]
+                            :swagger {:operationId "updateTodo"}
                             :return Todo
                             :body [todo TodoParams]
                             :path-params [todo-id :- s/Int]
@@ -108,6 +117,7 @@
                               (not-found)))
 
                      (DELETE "/:todo-id.json" [todo-id]
+                             :swagger {:operationId "deleteTodo"}
                              :path-params [todo-id :- s/Int]
                              :summary "Delete a Todo"
                              (if-let [_ (db/delete-todo user-id todo-id)]
