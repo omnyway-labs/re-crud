@@ -28,7 +28,7 @@
 
 (defn todo-params [todo]
   {:todo-id (:id todo)
-   :user-id (:user_id todo)})
+   :user-id (:user-id todo)})
 
 (def user-list-actions
   (mui/actions {:resource-name :merchant
