@@ -6,7 +6,7 @@
                  [yogthos/config "0.8"]
                  [ring "1.7.0"]
                  [ring-server "0.5.0"]
-                 [org.omnyway/re-crud "0.1.13"]
+                 [org.omnyway/re-crud "0.1.14"]
                  [metosin/compojure-api "2.0.0-alpha26"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]]

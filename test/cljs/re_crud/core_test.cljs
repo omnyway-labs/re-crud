@@ -45,7 +45,7 @@
 
 (defn update-assertions [data]
   (is (= (set (keys data))
-         #{:id :first_name :last_name :email :created_at :updated_at :url}))
+         #{:id :first-name :last-name :email :url}))
   (is (= "updatedemail@example.com"
          (:email data))))
 
@@ -54,7 +54,7 @@
   (case thing-to-test
     :create-components (create-components-assertions)
     :fetch             (is (= (set (keys (get-in db (u/resource-path :user.update))))
-                              #{:id :first_name :last_name :email :created_at :updated_at :url}))
+                              #{:id :first-name :last-name :email :url}))
     :perform (update-assertions data))
   (if (empty? @things-to-test)
     {:done []}

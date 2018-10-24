@@ -1,8 +1,4 @@
-(ns re-crud.test-data
-  (:import [java.sql Timestamp]))
-
-(defn timestamp []
-  (Timestamp. (System/currentTimeMillis)))
+(ns re-crud.test-data)
 
 (def swagger
   {"swagger" "2.0"
@@ -73,22 +69,18 @@
     {"type" "object"
      "properties"
      {"id" {"type" "integer"}
-      "first_name" {"type" "string"}
-      "last_name" {"type" "string"}
-      "email" {"type" "string"}
-      "created_at" {"type" "string"}
-      "updated_at" {"type" "string"}}}
+      "first-name" {"type" "string"}
+      "last-name" {"type" "string"}
+      "email" {"type" "string"}}}
     "UserParam"
     {"type" "object"
-     "properties" {"first_name" {"type" "string"}
-                   "last_name" {"type" "string"}
+     "properties" {"first-name" {"type" "string"}
+                   "last-name" {"type" "string"}
                    "email" {"type" "string"}}}}})
 
 (def user
   {:id 1
-   :first_name "Foo"
-   :last_name "Bar"
+   :first-name "Foo"
+   :last-name "Bar"
    :email "foo@bar.com"
-   :created_at (timestamp)
-   :updated_at (timestamp)
    :url "/user/1"})
