@@ -26,6 +26,7 @@
 (defn delete-user [user-id]
   (when-let [user (get-user user-id)]
     (swap! DB update-in [:users] dissoc user-id)
+    (swap! DB update-in [:todos] dissoc user-id)
     :ok))
 
 (defn get-todos [user-id]
