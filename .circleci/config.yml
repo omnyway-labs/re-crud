@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  test:
+    parallelism: 1
+    working_directory: ~/re-crud
+    docker:
+      - image: circleci/clojure:latest
+    environment:
+      - VERSION_FILE: ../VERSION
+      - SERVICE_NAME: re-crud
+    steps:
+      - checkout
+      - run:
+          name: http-server
+          command: lein run -m re-crud.mock-http-server
+          background: true
+      - run: for i in `seq 120`; do nc -v -w 1 localhost 8000 && break ; sleep 1; done
+      - run: make test
+workflows:
+  version: 2
+  build_test_release:
+    jobs:
+      - test
