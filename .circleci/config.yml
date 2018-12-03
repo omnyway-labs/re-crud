@@ -10,6 +10,7 @@ jobs:
       - SERVICE_NAME: re-crud
     steps:
       - checkout
+      - run: sudo apt-get install -yy make
       - run:
           name: http-server
           command: lein run -m re-crud.mock-http-server
