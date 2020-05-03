@@ -36,7 +36,8 @@
         action (get actions method)]
     (action url
             {:params request-body
-             :headers {"x-re-crud-service" service-name}
+             :headers {"x-re-crud-service" service-name
+                       "Accept" "application/json"}
              :format :json
              :handler #(response-handler log-id request-body % operation-id  on-success)
              :error-handler (fn [{:keys [status response]}]

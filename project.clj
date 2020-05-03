@@ -12,11 +12,11 @@
 ;; See the License for the specific language governing permissions and
 ;; limitations under the License.
 
-(defproject org.omnyway/re-crud "0.1.13"
+(defproject org.omnyway/re-crud "0.1.14"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.229"]
                  [reagent "0.6.0"]
-                 [re-frame "0.9.2"]
+                 [re-frame "0.10.5"]
                  [cljs-ajax "0.5.8"]
                  [camel-snake-kebab "0.4.0"]
                  [cljsjs/reactable "0.14.1-0"]]

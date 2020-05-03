@@ -11,9 +11,9 @@ swagger.json and perform HTTP calls to show, list, create and update resources.
 ![example-interface-screencast](https://media.giphy.com/media/zzYgeqXRUO9fG/giphy.gif "re-crud example interface")
 
 ## Example app
-- There is a comprehensive example-app in this repo: [example-app](example-app/)
-- You can find a running instance of this app here: [demo](https://omnypay.github.io/re-crud/)
-- This uses a fairly minimal CRUD web service written in Rails, deployed here: [web app](https://re-crud-example.herokuapp.com/swagger/index.html)
+
+- There is a comprehensive example-app in this repo: [re-crud-example](re-crud-example/)
+- This includes a fairly minimal CRUD web service written on top of Compojure
 
 ## Usage
 
@@ -96,11 +96,11 @@ Run mock server: `lein run -m re-crud.mock-http-server`
 ## Dev Workflow
 
 `re-crud` is developed against a running HTTP server included
-in this repo under the `example-app/` directory.
+in this repo under the `re-crud-example/` directory.
 
 ```bash
-$ # change working directory to example-app:
-$ cd path/to/re-crud/example-app
+$ # change working directory to re-crud-example:
+$ cd path/to/re-crud/re-crud-example
 $
 $ # copy re-crud source into the app's source.
 $ # this will:
@@ -109,10 +109,11 @@ $ # * override the project's dependency on re-crud
 $ rm -rf src/cljs/re_crud ; cp -r ../src/cljs/re_crud src/cljs/
 $
 $ # start REPL for app
-$ lein figwheel
+$ lein do clean, figwheel dev
 ```
 
-Now we can edit source files under `example-app/src/cljs/re_crud`.
+Now we can edit source files under `re-crud-example/src/cljs/re_crud`, and they will be compiled automatically.
+A Clojure nREPL server will also be started on port 5000 in the same process as the web server.
 
 Before checking the updated code in to VCS, run
 ```

@@ -46,6 +46,6 @@
   (reg-event-fx :on-ready on-ready)
   (re-frame/dispatch-sync [:initialize-db])
   (dev-setup)
-  (re-crud/init {"re-crud-example" {:service-url "https://re-crud-example.herokuapp.com"
-                                    :swagger-url "https://re-crud-example.herokuapp.com/api/swagger.json"
+  (re-crud/init {"re-crud-example" {:service-url "http://localhost:3449"
+                                    :swagger-url "http://localhost:3449/swagger.json"
                                     :dispatch-on-ready [:on-ready]}}))
